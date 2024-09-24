@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"
+    />
+    <script
+      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+      async
+      defer
+    ></script>
+
+    <style>
+      .w-form-done,
+      .w-form-fail {
+        display: none;
+      }
+
+      .visible {
+        display: block !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="feedback-form-container">
+      <h2>Develop your vision on HAQQ</h2>
+      <br />
+      <form id="feedback-form">
+        <input
+          maxlength="256"
+          id="feedback-name"
+          name="feedback-name"
+          placeholder="Name"
+          type="text"
+          required
+        />
+        <br />
+        <input
+          maxlength="256"
+          name="feedback-email"
+          placeholder="Enter your e-mail"
+          type="email"
+          id="feedback-email"
+          required
+        />
+        <br />
+        <textarea
+          placeholder="Your message"
+          maxlength="5000"
+          minlength="10"
+          id="feedback-message"
+          name="feedback-message"
+          required
+        ></textarea>
+        <br />
+        <div
+          class="cf-turnstile"
+          data-sitekey="0x4AAAAAAAJdhpkY-4iZ4A_X"
+          data-callback="onFeedbackTurnstileSuccess"
+        ></div>
+        <br />
+        <input
+          type="submit"
+          data-wait="Please wait..."
+          value="Submit"
+          disabled
+        />
+      </form>
+
+      <div class="w-form-done" aria-label="footer form success">
+        <div>
+          Great! You've successfully subscribed to HAQQ updates. Stay tuned for
+          all the latest news!
+        </div>
+      </div>
+
+      <div class="w-form-fail" aria-label="footer form failure">
+        <div>Oops! Something went wrong while submitting the form.</div>
+      </div>
+    </div>
+
+    <div id="subscribe-form-container">
+      <h2>Sign up for HAQQ updates</h2>
+      <br />
+      <form id="subscribe-form">
+        <input
+          maxlength="256"
+          name="subscribe-name"
+          placeholder="Full name"
+          type="text"
+          id="subscribe-name"
+          required
+        />
+        <br />
+        <input
+          maxlength="256"
+          placeholder="Enter your e-mail"
+          type="email"
+          id="subscribe-email"
+          name="subscribe-email"
+          required
+        />
+        <br />
+        <div
+          class="cf-turnstile"
+          data-sitekey="0x4AAAAAAAJdhpkY-4iZ4A_X"
+          data-callback="onSubscribeTurnstileSuccess"
+        ></div>
+        <br />
+        <input
+          type="submit"
+          data-wait="Please wait..."
+          value="Subscribe"
+          disabled
+        />
+      </form>
+
+      <div class="success-message w-form-done" aria-label="footer form success">
+        <div>
+          Great! You've successfully subscribed to HAQQ updates. Stay tuned for
+          all the latest news!
+        </div>
+      </div>
+      <div class="w-form-fail" aria-label="footer form failure">
+        <div>Oops! Something went wrong while submitting the form.</div>
+      </div>
+    </div>
+
+    <!-- Placeholder for price -->
+    <div>
+      <h2>ISLM Price</h2>
+      <p><span data-islm-price>Loading price...</span> ISLM</p>
+    </div>
+
+    <!-- Placeholder for chain stats -->
+    <div>
+      <h2>Chain Stats</h2>
+
+      <ul role="list">
+        <li>
+          <h3>Mainnet accounts created</h3>
+          <p data-chain-stats-accounts>Loading...</p>
+        </li>
+        <li>
+          <h3>Transactions in the last 24 hours</h3>
+          <p data-chain-stats-transactions>Loading...</p>
+        </li>
+        <li>
+          <h3>Seconds to consensus finality</h3>
+          <p data-chain-stats-finality>Loading...</p>
+        </li>
+        <li>
+          <h3>Average cost per transaction</h3>
+          <p data-chain-stats-cost>Loading...</p>
+        </li>
+        <li>
+          <h3>Supply</h3>
+          <p data-chain-stats-supply>Loading...</p>
+        </li>
+
+        <li>
+          <h3>Circulating Supply</h3>
+          <p data-chain-stats-circulating-supply>Loading...</p>
+        </li>
+      </ul>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
