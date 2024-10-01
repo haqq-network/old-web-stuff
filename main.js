@@ -102,6 +102,15 @@ function updatePrice() {
     });
 }
 
+// Function to start updating price every 5 seconds
+function startPriceUpdates() {
+  updatePrice(); // Initial update
+  setInterval(updatePrice, 5000); // Update every 5 seconds
+}
+
+// Call startPriceUpdates when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', startPriceUpdates);
+
 // Function to update chain stats using data attributes
 function updateChainStats() {
   // Fetch chain stats data
