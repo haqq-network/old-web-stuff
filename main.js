@@ -145,6 +145,31 @@ function updateChainStats() {
         ); // Convert cost to number and format it
       }
 
+      // Update Active Validators
+      var validatorsActiveElement = document.querySelector("[data-chain-stats-validators-active]");
+      if (validatorsActiveElement) {
+        validatorsActiveElement.textContent = formatNumber(Number(chainStats.validatorsActive));
+      }
+
+      // Update Total Supply
+      var totalSupplyElement = document.querySelector("[data-chain-stats-total-supply]");
+      if (totalSupplyElement) {
+        totalSupplyElement.textContent = formatNumber(Number(chainStats.supply));
+      }
+
+      // Update Staked
+      var stakedElement = document.querySelector("[data-chain-stats-staked]");
+      if (stakedElement) {
+        stakedElement.textContent = formatNumber(Number(chainStats.staked));
+      }
+
+      // Update Stake Ratio
+      var stakeRatioElement = document.querySelector("[data-chain-stats-stake-ratio]");
+      if (stakeRatioElement) {
+        const value = formatNumber(Number(chainStats.stakeRatio * 100), 2, 2) + '%'
+        stakeRatioElement.textContent = `TOTAL STAKED (${value})`;
+      }
+
       // Update Supply
       var supplyElement = document.querySelector("[data-chain-stats-supply]");
       if (supplyElement) {
