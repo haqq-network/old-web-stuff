@@ -151,3 +151,30 @@ For example, to show the number of mainnet accounts created:
 This element will be automatically updated when the chain stats are fetched.
 
 If you have any more questions or need further explanations, feel free to ask!
+
+### Dynamic Link Generation
+
+The code includes functionality to dynamically generate and update links for app download buttons. This is particularly useful for tracking user interactions and providing personalized links.
+
+1. **Button Classes**:
+
+   - `button-app-ios`: Used for iOS app download buttons.
+   - `button-app-android`: Used for Android app download buttons.
+
+2. **How it works**:
+
+   - When the page loads, the script searches for buttons with these classes.
+   - It then generates a dynamic link for each button based on the user's distinct ID (obtained from PostHog) and the appropriate app store URL.
+   - The `href` attribute of these buttons is updated with the newly generated dynamic link.
+
+3. **Usage**:
+   Simply add the appropriate class to your app download buttons:
+
+   ```html
+   <a href="#" class="button-app-ios">Download for iOS</a>
+   <a href="#" class="button-app-android">Download for Android</a>
+   ```
+
+   The script will automatically update these links with the dynamically generated URLs when the page loads.
+
+Note: This feature requires PostHog to be properly initialized and the user's distinct ID to be available. If the distinct ID is not available, the links will not be updated, and a warning will be logged to the console.

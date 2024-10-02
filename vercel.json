@@ -1,7 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/analytics/:path*",
+      "source": "/ingest/:path*",
       "destination": "https://eu.i.posthog.com/:path*"
     }
   ]

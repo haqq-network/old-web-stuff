@@ -12,7 +12,6 @@
       async
       defer
     ></script>
-
     <style>
       .w-form-done,
       .w-form-fail {
@@ -23,6 +22,126 @@
         display: block !important;
       }
     </style>
+
+    <!-- Snippet for PostHog, dynamic links, wallet user identification and app download buttons -->
+    <script>
+      // prettier-ignore
+      !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+
+      var POSTHOG_API_KEY = "phc_S8yvZufvPSBgyfXwjP2nIzndGES4HV8i0yOxMecUkLE";
+
+      // Function to generate the dynamic link
+      function getDynamicLink(link, distinctId, forwardTo) {
+        console.log("Generating dynamic link for:", link); // Log the original link
+        // Create a URL object from the base link
+        var linkUrl = new URL(link);
+        // Append 'distinct_id' as a query parameter
+        linkUrl.searchParams.append("distinct_id", distinctId);
+        console.log("Appended distinct_id:", distinctId); // Log the distinct ID
+
+        // Optionally append 'go_to' parameter if 'forwardTo' is provided
+        if (forwardTo) {
+          linkUrl.searchParams.append("go_to", encodeURIComponent(forwardTo));
+          console.log("Appended forwardTo:", forwardTo); // Log the forwardTo parameter
+        }
+
+        // Construct the dynamic link
+        var dynamicLink =
+          "https://haqq.page.link/" +
+          "?link=" +
+          encodeURIComponent(linkUrl.toString()) +
+          "&apn=com.haqq.wallet&isi=6443843352&ibi=com.haqq.wallet";
+        console.log("Generated dynamic link:", dynamicLink); // Log the generated dynamic link
+        return dynamicLink;
+      }
+
+      posthog.init(POSTHOG_API_KEY, {
+        api_host: "https://old-haqq-stuff.vercel.app/ingest",
+        ui_host: "https://eu.i.posthog.com",
+        person_properties: "identified_only",
+        persistence: "localStorage+cookie",
+        loaded: function (posthog) {
+          // Identify user from HaqqWallet
+          var isHaqqWallet = Boolean(
+            window.ethereum && window.ethereum.isHaqqWallet
+          );
+
+          if (isHaqqWallet) {
+            var walletDistinctId = window.__HAQQWALLET__
+              ? window.__HAQQWALLET__.POSTHOG_DISTINCT_ID
+              : null;
+            console.log("IdentifyWalletUsers", { walletDistinctId });
+
+            posthog.identify(walletDistinctId || posthog.get_distinct_id());
+          }
+
+          // Dynamic redirection based on URL parameters
+          var params = new URLSearchParams(window.location.search);
+          var goTo = params.get("go_to");
+          var distinctId = params.get("distinct_id");
+
+          if (distinctId && distinctId !== "undefined" && distinctId !== "") {
+            posthog.identify(distinctId);
+
+            if (goTo && goTo !== "undefined" && goTo !== "") {
+              window.location.href = goTo;
+            }
+          }
+
+          // This script generates dynamic links for buttons on the page based on the user's distinct ID
+          // Get the user's distinct ID from PostHog
+          var distinctId =
+            typeof posthog !== "undefined" ? posthog.get_distinct_id() : null;
+          console.log("Retrieved distinct ID:", distinctId); // Log the retrieved distinct ID
+
+          // Check if distinctId is available
+          if (distinctId) {
+            // Find all buttons by class name 'button-app-ios' or 'button-app-android'
+            var iosButtons = document.getElementsByClassName("button-app-ios");
+            var androidButtons =
+              document.getElementsByClassName("button-app-android");
+
+            // Process iOS buttons
+            for (var i = 0; i < iosButtons.length; i++) {
+              var button = iosButtons[i];
+              // Generate the dynamic link for iOS
+              var dynamicLink = getDynamicLink(
+                "https://haqq.network/wallet",
+                distinctId,
+                "https://apps.apple.com/app/haqq-wallet-by-bored-gen/id6443843352"
+              );
+              button.setAttribute("href", dynamicLink);
+              console.log(
+                "Updated iOS button",
+                i,
+                "with dynamic link:",
+                dynamicLink
+              ); // Log the updated link
+            }
+
+            // Process Android buttons
+            for (var j = 0; j < androidButtons.length; j++) {
+              var button = androidButtons[j];
+              // Generate the dynamic link for Android
+              var dynamicLink = getDynamicLink(
+                "https://haqq.network/wallet",
+                distinctId,
+                "https://play.google.com/store/apps/details?id=com.haqq.wallet"
+              );
+              button.setAttribute("href", dynamicLink);
+              console.log(
+                "Updated Android button",
+                j,
+                "with dynamic link:",
+                dynamicLink
+              ); // Log the updated link
+            }
+          } else {
+            console.warn("Distinct ID not available.");
+          }
+        },
+      });
+    </script>
   </head>
   <body>
     <div id="feedback-form-container">
@@ -181,6 +300,14 @@
           <p data-chain-stats-active-validators-count>Loading...</p>
         </li>
       </ul>
+    </div>
+
+    <!-- New section for app download buttons -->
+    <div>
+      <h2>Download HAQQ Wallet</h2>
+      <p>Choose your platform:</p>
+      <a href="#" class="button-app-ios">Download for iOS</a>
+      <a href="#" class="button-app-android">Download for Android</a>
     </div>
 
     <script type="module" src="./main.js"></script>
