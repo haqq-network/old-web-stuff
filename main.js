@@ -21,12 +21,7 @@ function formatNumber(
   maximumFractionDigits =
     maximumFractionDigits !== undefined ? maximumFractionDigits : 3; // Default value set to 3
   locale = locale || DEFAULT_LOCALE; // Default locale
-  console.log("formatNumber", {
-    numberToFormat,
-    minimumFractionDigits,
-    maximumFractionDigits,
-    locale,
-  });
+
   // Check if locale is valid
   if (!regex.test(locale)) {
     console.warn(
@@ -146,15 +141,23 @@ function updateChainStats() {
       }
 
       // Update Active Validators
-      var validatorsActiveElement = document.querySelector("[data-chain-stats-validators-active]");
+      var validatorsActiveElement = document.querySelector(
+        "[data-chain-stats-validators-active]"
+      );
       if (validatorsActiveElement) {
-        validatorsActiveElement.textContent = formatNumber(Number(chainStats.validatorsActive));
+        validatorsActiveElement.textContent = formatNumber(
+          Number(chainStats.validatorsActive)
+        );
       }
 
       // Update Total Supply
-      var totalSupplyElement = document.querySelector("[data-chain-stats-total-supply]");
+      var totalSupplyElement = document.querySelector(
+        "[data-chain-stats-total-supply]"
+      );
       if (totalSupplyElement) {
-        totalSupplyElement.textContent = formatNumber(Number(chainStats.supply));
+        totalSupplyElement.textContent = formatNumber(
+          Number(chainStats.supply)
+        );
       }
 
       // Update Staked
@@ -195,7 +198,10 @@ function updateChainStats() {
       );
       if (stakedRatioElement) {
         stakedRatioElement.textContent = formatNumber(
-          Number(chainStats.stakeRatio)
+          Number(chainStats.stakeRatio * 100),
+          2,
+          2,
+          window.navigator.language
         );
       }
 
@@ -227,9 +233,13 @@ function updateChainStats() {
 
 // Initialize Feedback form
 function initializeFeedbackForm() {
+  console.log("Initializing feedback form");
   // Get feedback form element
   var feedbackForm = document.getElementById("feedback-form");
-  if (!feedbackForm) return;
+  if (!feedbackForm) {
+    console.warn("Feedback form not found");
+    return;
+  }
 
   var feedbackSubmitButton = feedbackForm.querySelector(
     "#feedback-form input[type='submit']"
@@ -238,24 +248,29 @@ function initializeFeedbackForm() {
 
   // Callback function for Turnstile success
   window.onFeedbackTurnstileSuccess = function (token) {
+    console.log("Feedback Turnstile token received");
     feedbackTurnstileToken = token;
     feedbackSubmitButton.disabled = false; // Enable the submit button
+    console.log("Feedback submit button enabled");
   };
 
   feedbackForm.addEventListener("submit", function (event) {
-    console.log("submit", { event });
+    console.log("Feedback form submitted", { event });
     event.preventDefault();
 
     var formData = new FormData(feedbackForm);
+    console.log("Feedback form data collected");
 
     var jsonData = {
       email: formData.get("feedback-email"),
       name: formData.get("feedback-name"),
       message: formData.get("feedback-message"),
-      token: feedbackTurnstileToken, // Add the Turnstile token to the request
+      token: feedbackTurnstileToken,
     };
+    console.log("Feedback JSON data prepared", jsonData);
 
     var feedbackApiUrl = new URL("/api/feedback", API_DOMAIN);
+    console.log("Sending feedback data to:", feedbackApiUrl.toString());
 
     fetch(feedbackApiUrl, {
       method: "POST",
@@ -263,27 +278,32 @@ function initializeFeedbackForm() {
       body: JSON.stringify(jsonData),
     })
       .then(function (response) {
+        console.log("Feedback API response received", response);
         if (response.ok) {
           return response.json();
         }
-        throw new Error("Form submission failed.");
+        throw new Error("Feedback form submission failed.");
       })
       .then(function (data) {
-        console.log("Form successfully submitted:", data);
-        alert("Form successfully submitted!");
+        console.log("Feedback form successfully submitted:", data);
+        alert("Feedback form successfully submitted!");
       })
       .catch(function (error) {
-        console.error("Error:", error);
-        alert("Form submission error.");
+        console.error("Feedback form submission error:", error);
+        alert("Feedback form submission error.");
       });
   });
 }
 
 // Initialize Subscribe form
 function initializeSubscribeForm() {
+  console.log("Initializing subscribe form");
   // Get subscribe form element
   var subscribeForm = document.getElementById("subscribe-form");
-  if (!subscribeForm) return;
+  if (!subscribeForm) {
+    console.warn("Subscribe form not found");
+    return;
+  }
 
   var subscribeSubmitButton = subscribeForm.querySelector(
     "#subscribe-form input[type='submit']"
@@ -292,29 +312,49 @@ function initializeSubscribeForm() {
 
   // Callback function for Turnstile success
   window.onSubscribeTurnstileSuccess = function (token) {
+    console.log("Subscribe Turnstile token received");
     subscribeTurnstileToken = token;
     subscribeSubmitButton.disabled = false; // Enable the submit button
+    console.log("Subscribe submit button enabled");
   };
 
   subscribeForm.addEventListener("submit", function (event) {
-    console.log("submit", { event });
+    console.log("Subscribe form submitted", { event });
     event.preventDefault();
 
     var formData = new FormData(subscribeForm);
+    console.log("Subscribe form data collected");
 
     var jsonData = {
       email: formData.get("subscribe-email"),
       name: formData.get("subscribe-name"),
-      token: subscribeTurnstileToken, // Add the Turnstile token to the request
+      token: subscribeTurnstileToken,
     };
+    console.log("Subscribe JSON data prepared", jsonData);
 
     var subscribeApiUrl = new URL("/api/subscribe", API_DOMAIN);
+    console.log("Sending subscribe data to:", subscribeApiUrl.toString());
 
     fetch(subscribeApiUrl, {
       method: "POST",
       headers: REQUEST_HEADERS,
       body: JSON.stringify(jsonData),
-    });
+    })
+      .then(function (response) {
+        console.log("Subscribe API response received", response);
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error("Subscribe form submission failed.");
+      })
+      .then(function (data) {
+        console.log("Subscribe form successfully submitted:", data);
+        alert("Subscribe form successfully submitted!");
+      })
+      .catch(function (error) {
+        console.error("Subscribe form submission error:", error);
+        alert("Subscribe form submission error.");
+      });
   });
 }
 
