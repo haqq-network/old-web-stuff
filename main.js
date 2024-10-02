@@ -102,15 +102,6 @@ function updatePrice() {
     });
 }
 
-// Function to start updating price every 5 seconds
-function startPriceUpdates() {
-  updatePrice(); // Initial update
-  setInterval(updatePrice, 5000); // Update every 5 seconds
-}
-
-// Call startPriceUpdates when the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', startPriceUpdates);
-
 // Function to update chain stats using data attributes
 function updateChainStats() {
   // Fetch chain stats data
@@ -170,13 +161,6 @@ function updateChainStats() {
       var stakedElement = document.querySelector("[data-chain-stats-staked]");
       if (stakedElement) {
         stakedElement.textContent = formatNumber(Number(chainStats.staked));
-      }
-
-      // Update Stake Ratio
-      var stakeRatioElement = document.querySelector("[data-chain-stats-stake-ratio]");
-      if (stakeRatioElement) {
-        const value = formatNumber(Number(chainStats.stakeRatio * 100), 2, 2) + '%'
-        stakeRatioElement.textContent = `TOTAL STAKED (${value})`;
       }
 
       // Update Supply
@@ -334,10 +318,16 @@ function initializeSubscribeForm() {
   });
 }
 
+// Function to start updating price every 5 seconds
+function startPriceUpdates() {
+  updatePrice(); // Initial update
+  setInterval(updatePrice, 5000); // Update every 5 seconds
+}
+
 // Single DOMContentLoaded event listener for initialization
 document.addEventListener("DOMContentLoaded", function () {
   // Update price data
-  updatePrice(); // Update price data
+  startPriceUpdates(); // Update price data
   updateChainStats(); // Update Chain Stats data
   initializeFeedbackForm(); // Initialize Feedback form
   initializeSubscribeForm(); // Initialize Subscribe form

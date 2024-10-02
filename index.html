@@ -41,7 +41,7 @@
 
         // Optionally append 'go_to' parameter if 'forwardTo' is provided
         if (forwardTo) {
-          linkUrl.searchParams.append("go_to", encodeURIComponent(forwardTo));
+          linkUrl.searchParams.append("go_to", forwardTo);
           console.log("Appended forwardTo:", forwardTo); // Log the forwardTo parameter
         }
 
