@@ -178,3 +178,21 @@ The code includes functionality to dynamically generate and update links for app
    The script will automatically update these links with the dynamically generated URLs when the page loads.
 
 Note: This feature requires PostHog to be properly initialized and the user's distinct ID to be available. If the distinct ID is not available, the links will not be updated, and a warning will be logged to the console.
+
+### API Handlers
+
+The API handlers for the forms and other functionalities are located in the `api` folder. These handlers process the form submissions and interact with external services. Here's a brief overview:
+
+1. **Feedback Handler** (`api/feedback.ts`):
+
+   - Processes feedback form submissions.
+   - Validates the Turnstile token.
+   - Sends the feedback data to the Falconer endpoint.
+
+2. **Subscribe Handler** (`api/subscribe.ts`):
+
+   - Handles newsletter subscription requests.
+   - Validates the Turnstile token.
+   - Submits the subscription data to the Falconer endpoint.
+
+These handlers are implemented using Vercel's Edge Runtime, providing fast and efficient processing of requests.

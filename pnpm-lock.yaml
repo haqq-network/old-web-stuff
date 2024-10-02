@@ -11,16 +11,16 @@ importers:
       '@vercel/edge':
         specifier: 1.1.2
         version: 1.1.2
-    devDependencies:
-      '@types/node':
-        specifier: 22.6.1
-        version: 22.6.1
       '@vercel/node':
         specifier: 3.2.16
         version: 3.2.16
       vercel:
         specifier: 37.5.4
         version: 37.5.4
+    devDependencies:
+      '@types/node':
+        specifier: 22.6.1
+        version: 22.6.1
 
 packages:
 
