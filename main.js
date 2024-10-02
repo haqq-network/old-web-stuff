@@ -194,10 +194,50 @@ function updateChainStats() {
           Number(chainStats.circulatingSupply) // Convert circulating supply to number and format it
         );
       }
+
+      // Update staking amount
+      var stakedAmountElement = document.querySelector(
+        "[data-chain-stats-staked-amount]"
+      );
+      if (stakedAmountElement) {
+        stakedAmountElement.textContent = formatNumber(
+          Number(chainStats.staked) // Convert staking amount to number and format it
+        );
+      }
+
+      // Update staking ratio
+      var stakedRatioElement = document.querySelector(
+        "[data-chain-stats-staked-ratio]"
+      );
+      if (stakedRatioElement) {
+        stakedRatioElement.textContent = formatNumber(
+          Number(chainStats.stakeRatio)
+        );
+      }
+
+      // Update Validators count
+      var validatorsCountElement = document.querySelector(
+        "[data-chain-stats-validators-count]"
+      );
+      if (validatorsCountElement) {
+        validatorsCountElement.textContent = formatNumber(
+          Number(chainStats.validatorsCount)
+        );
+      }
+
+      // Update Active validators count
+      var activeValidatorsCountElement = document.querySelector(
+        "[data-chain-stats-active-validators-count]"
+      );
+      if (activeValidatorsCountElement) {
+        activeValidatorsCountElement.textContent = formatNumber(
+          Number(chainStats.validatorsActive)
+        );
+      }
     })
     .catch(function (error) {
       console.error("Failed to fetch chain stats:", error);
-      // Обработка ошибок
+      // Error handling
     });
 }
 

@@ -16,17 +16,23 @@ In the code, specific elements use `data-*` attributes to dynamically update the
 
 2. **Chain Stats**:
 
-   - `data-chain-stats-accounts`: This attribute is used to display the number of accounts created on the mainnet.
-   - `data-chain-stats-transactions`: Used to display the number of transactions in the last 24 hours.
-   - `data-chain-stats-finality`: Displays the seconds to consensus finality.
+   - `data-chain-stats-accounts`: Used to display the number of accounts created on the mainnet.
+   - `data-chain-stats-transactions`: Displays the number of transactions in the last 24 hours.
+   - `data-chain-stats-finality`: Shows the seconds to consensus finality.
    - `data-chain-stats-cost`: Displays the average cost per transaction.
-   - `data-chain-stats-supply`: Displays the total supply of ISLM.
+   - `data-chain-stats-supply`: Shows the total supply of ISLM.
    - `data-chain-stats-circulating-supply`: Displays the circulating supply.
+   - `data-chain-stats-staked-amount`: Shows the amount of staked tokens.
+   - `data-chain-stats-staked-ratio`: Displays the percentage of staked tokens.
+   - `data-chain-stats-validators-count`: Shows the total number of validators.
+   - `data-chain-stats-active-validators-count`: Displays the number of active validators.
 
-   Example:
+   Examples:
 
    ```html
    <p data-chain-stats-accounts>Loading...</p>
+   <p data-chain-stats-staked-amount>Loading...</p>
+   <p><span data-chain-stats-staked-ratio>Loading...</span> %</p>
    ```
 
 These attributes allow JavaScript to target specific parts of the page and update them with the relevant data fetched from the API.
