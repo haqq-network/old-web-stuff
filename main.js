@@ -1,6 +1,7 @@
 // Constants
 var FALCONER_URL = "https://falconer.haqq.sh";
 var API_DOMAIN = "https://old-haqq-stuff.vercel.app"; // Base domain for the API
+// var API_DOMAIN = "http://localhost:3000"; // Base domain for the API
 var REQUEST_HEADERS = {
   "Content-Type": "application/json",
 };
@@ -231,28 +232,40 @@ function updateChainStats() {
     });
 }
 
+// Global Turnstile token
+var globalTurnstileToken = "";
+
+// Common Turnstile callback function
+window.onTurnstileSuccess = function (token) {
+  console.log("Turnstile token received");
+  globalTurnstileToken = token;
+
+  // Enable submit buttons for all forms
+  document
+    .querySelectorAll('form[id^="feedback-"], form[id^="subscribe-"]')
+    .forEach(function (form) {
+      var submitButton = form.querySelector('input[type="submit"]');
+      if (submitButton) {
+        submitButton.disabled = false;
+      }
+    });
+
+  console.log("All submit buttons enabled");
+};
+
 // Initialize Feedback form
 function initializeFeedbackForm() {
   console.log("Initializing feedback form");
-  // Get feedback form element
   var feedbackForm = document.getElementById("feedback-form");
   if (!feedbackForm) {
     console.warn("Feedback form not found");
     return;
   }
 
-  var feedbackSubmitButton = feedbackForm.querySelector(
-    "#feedback-form input[type='submit']"
-  );
-  var feedbackTurnstileToken = "";
-
-  // Callback function for Turnstile success
-  window.onFeedbackTurnstileSuccess = function (token) {
-    console.log("Feedback Turnstile token received");
-    feedbackTurnstileToken = token;
-    feedbackSubmitButton.disabled = false; // Enable the submit button
-    console.log("Feedback submit button enabled");
-  };
+  var feedbackSubmitButton = feedbackForm.querySelector('input[type="submit"]');
+  if (feedbackSubmitButton) {
+    feedbackSubmitButton.disabled = true;
+  }
 
   feedbackForm.addEventListener("submit", function (event) {
     console.log("Feedback form submitted", { event });
@@ -265,7 +278,7 @@ function initializeFeedbackForm() {
       email: formData.get("feedback-email"),
       name: formData.get("feedback-name"),
       message: formData.get("feedback-message"),
-      token: feedbackTurnstileToken,
+      token: globalTurnstileToken,
     };
     console.log("Feedback JSON data prepared", jsonData);
 
@@ -295,40 +308,27 @@ function initializeFeedbackForm() {
   });
 }
 
-// Initialize Subscribe form
-function initializeSubscribeForm() {
-  console.log("Initializing subscribe form");
-  // Get subscribe form element
-  var subscribeForm = document.getElementById("subscribe-form");
-  if (!subscribeForm) {
-    console.warn("Subscribe form not found");
+// Initialize Subscribe forms
+function initializeSubscribeForms() {
+  console.log("Initializing subscribe forms");
+  var subscribeForms = document.querySelectorAll('[id^="subscribe-"]');
+
+  if (subscribeForms.length === 0) {
+    console.warn("No subscribe forms found");
     return;
   }
 
-  var subscribeSubmitButton = subscribeForm.querySelector(
-    "#subscribe-form input[type='submit']"
-  );
-  var subscribeTurnstileToken = "";
-
-  // Callback function for Turnstile success
-  window.onSubscribeTurnstileSuccess = function (token) {
-    console.log("Subscribe Turnstile token received");
-    subscribeTurnstileToken = token;
-    subscribeSubmitButton.disabled = false; // Enable the submit button
-    console.log("Subscribe submit button enabled");
-  };
-
-  subscribeForm.addEventListener("submit", function (event) {
-    console.log("Subscribe form submitted", { event });
+  function handleSubscribeFormSubmit(event) {
     event.preventDefault();
+    console.log("Subscribe form submitted", { event });
 
-    var formData = new FormData(subscribeForm);
-    console.log("Subscribe form data collected");
+    var form = event.target;
+    var formData = new FormData(form);
 
     var jsonData = {
       email: formData.get("subscribe-email"),
-      name: formData.get("subscribe-name"),
-      token: subscribeTurnstileToken,
+      name: formData.get("subscribe-name") || "",
+      token: globalTurnstileToken,
     };
     console.log("Subscribe JSON data prepared", jsonData);
 
@@ -355,6 +355,14 @@ function initializeSubscribeForm() {
         console.error("Subscribe form submission error:", error);
         alert("Subscribe form submission error.");
       });
+  }
+
+  subscribeForms.forEach(function (form) {
+    var submitButton = form.querySelector('input[type="submit"]');
+    if (submitButton) {
+      submitButton.disabled = true;
+    }
+    form.addEventListener("submit", handleSubscribeFormSubmit);
   });
 }
 
@@ -370,5 +378,5 @@ document.addEventListener("DOMContentLoaded", function () {
   startPriceUpdates(); // Update price data
   updateChainStats(); // Update Chain Stats data
   initializeFeedbackForm(); // Initialize Feedback form
-  initializeSubscribeForm(); // Initialize Subscribe form
+  initializeSubscribeForms(); // Initialize Subscribe form
 });

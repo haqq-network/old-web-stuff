@@ -1,4 +1,4 @@
-import { ipAddress } from "@vercel/edge";
+import { ipAddress } from "@vercel/functions";
 import { ALLOWED_ORIGINS, FALCONER_ENDPOINT } from "../const";
 
 interface FeedbackRequest {

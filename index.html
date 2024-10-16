@@ -176,7 +176,7 @@
         <div
           class="cf-turnstile"
           data-sitekey="0x4AAAAAAAJdhpkY-4iZ4A_X"
-          data-callback="onFeedbackTurnstileSuccess"
+          data-callback="onTurnstileSuccess"
         ></div>
         <br />
         <input
@@ -224,7 +224,7 @@
         <div
           class="cf-turnstile"
           data-sitekey="0x4AAAAAAAJdhpkY-4iZ4A_X"
-          data-callback="onSubscribeTurnstileSuccess"
+          data-callback="onTurnstileSuccess"
         ></div>
         <br />
         <input
@@ -239,6 +239,44 @@
         <div>
           Great! You've successfully subscribed to HAQQ updates. Stay tuned for
           all the latest news!
+        </div>
+      </div>
+      <div class="w-form-fail" aria-label="footer form failure">
+        <div>Oops! Something went wrong while submitting the form.</div>
+      </div>
+    </div>
+
+    <div id="subscribe-roadmap-form-container">
+      <h2>Sign up for HAQQ Roadmap updates</h2>
+      <br />
+      <form id="subscribe-roadmap-form">
+        <input
+          maxlength="256"
+          placeholder="Enter your e-mail"
+          type="email"
+          id="subscribe-roadmap-email"
+          name="subscribe-email"
+          required
+        />
+        <br />
+        <div
+          class="cf-turnstile"
+          data-sitekey="0x4AAAAAAAJdhpkY-4iZ4A_X"
+          data-callback="onTurnstileSuccess"
+        ></div>
+        <br />
+        <input
+          type="submit"
+          data-wait="Please wait..."
+          value="Subscribe"
+          disabled
+        />
+      </form>
+
+      <div class="success-message w-form-done" aria-label="footer form success">
+        <div>
+          Great! You've successfully subscribed to HAQQ Roadmap updates. Stay
+          tuned for all the latest news!
         </div>
       </div>
       <div class="w-form-fail" aria-label="footer form failure">
