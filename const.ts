@@ -8,5 +8,5 @@ export const FALCONER_ENDPOINT = "https://falconer.haqq.sh" as const;
 export const ALLOWED_ORIGINS = [
   "http://localhost:3000",
   "https://old-haqq-stuff.vercel.app",
-  "https://new.haqq.network",
+  "https://www.haqq.network",
 ];
