@@ -1,5 +1,5 @@
 // Constants
-var FALCONER_URL = "https://falconer.haqq.sh";
+var FALCONER_URL = "https://falconer.haqq.network";
 var API_DOMAIN = "https://old-haqq-stuff.vercel.app"; // Base domain for the API
 // var API_DOMAIN = "http://localhost:3000"; // Base domain for the API
 var REQUEST_HEADERS = {
@@ -311,7 +311,7 @@ function initializeFeedbackForm() {
 // Initialize Subscribe forms
 function initializeSubscribeForms() {
   console.log("Initializing subscribe forms");
-  var subscribeForms = document.querySelectorAll('[id^="subscribe-"]');
+  var subscribeForms = document.querySelectorAll('form[id^="subscribe-"]');
 
   if (subscribeForms.length === 0) {
     console.warn("No subscribe forms found");
@@ -342,10 +342,10 @@ function initializeSubscribeForms() {
     })
       .then(function (response) {
         console.log("Subscribe API response received", response);
-        if (response.ok) {
-          return response.json();
+        if (!response.ok) {
+          throw new Error("Subscribe form submission failed.");
         }
-        throw new Error("Subscribe form submission failed.");
+        return response.json();
       })
       .then(function (data) {
         console.log("Subscribe form successfully submitted:", data);
@@ -362,6 +362,8 @@ function initializeSubscribeForms() {
     if (submitButton) {
       submitButton.disabled = true;
     }
+    // Remove existing event listener before adding a new one
+    form.removeEventListener("submit", handleSubscribeFormSubmit);
     form.addEventListener("submit", handleSubscribeFormSubmit);
   });
 }

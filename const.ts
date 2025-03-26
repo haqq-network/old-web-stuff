@@ -1,4 +1,4 @@
-export const FALCONER_ENDPOINT = "https://falconer.haqq.sh" as const;
+export const FALCONER_ENDPOINT = "https://falconer.haqq.network" as const;
 
 // List of allowed origins for CORS (Cross-Origin Resource Sharing)
 // This list specifies which domains are permitted to make requests to our API
