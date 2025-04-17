@@ -2,11 +2,11 @@ import { ipAddress } from "@vercel/functions";
 import { ALLOWED_ORIGINS, FALCONER_ENDPOINT } from "../const";
 
 interface FeedbackRequest {
+  domain: string;
   name: string;
   email: string;
   message: string;
   ip: string;
-  domain: "haqq.network" | "islamiccoin.net";
   captcha_token: string;
 }
 
@@ -63,12 +63,12 @@ export async function POST(request: Request) {
     responseHeaders.set(key, value);
   });
 
-  const { email, token, name, message }: Record<string, string> =
+  const { email, token, name, message, domain }: Record<string, string> =
     await request.json();
-  console.log("Request Data:", { email, token, name, message });
+  console.log("Request Data:", { email, token, name, message, domain });
 
   const feedbackRequest: FeedbackRequest = {
-    domain: "haqq.network",
+    domain,
     ip,
     email,
     name,

@@ -275,6 +275,7 @@ function initializeFeedbackForm() {
     console.log("Feedback form data collected");
 
     var jsonData = {
+      domain: "haqq.network",
       email: formData.get("feedback-email"),
       name: formData.get("feedback-name"),
       message: formData.get("feedback-message"),
@@ -326,6 +327,7 @@ function initializeSubscribeForms() {
     var formData = new FormData(form);
 
     var jsonData = {
+      domain: "haqq.network",
       email: formData.get("subscribe-email"),
       name: formData.get("subscribe-name") || "",
       token: globalTurnstileToken,
